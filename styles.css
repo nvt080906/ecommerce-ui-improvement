@@ -78,8 +78,8 @@ body {
    ========================================================================== */
 .product-card {
     background-color: var(--color-bg-card);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-card);
+   border: 2px solid #b3bdca;
+border-radius: 14px;
     box-shadow: var(--shadow-card);
     display: flex;
     flex-direction: column;
@@ -136,7 +136,7 @@ body {
 
 /* --- Khung nội dung --- */
 .card-body {
-    padding: 12px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -147,7 +147,7 @@ body {
     font-size: 14px;
     font-weight: 600;
     line-height: 1.4;
-    margin-bottom: 6px;
+    margin-bottom: 14px;
     word-break: break-word;
 }
 
@@ -206,17 +206,24 @@ body {
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 16px;
     transition: background-color 0.2s ease;
     min-height: 38px;
 }
 
-    .btn-cart:hover {
-        background-color: var(--color-primary-hover);
-    }
+    
+.btn-cart:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.btn-cart:focus-visible {
+    outline: 3px solid #1d4ed8;
+    outline-offset: 3px;
+}
+
 
 /* ==========================================================================
    4. THIẾT KẾ RESPONSIVE
@@ -225,7 +232,7 @@ body {
 /* Tablet (768px -> 1023px): 3 cột */
 @media (max-width: 1023px) {
     .product-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 14px;
     }
 }
@@ -237,8 +244,9 @@ body {
     }
 
     .product-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
+        display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
     }
 
     .card-body {
