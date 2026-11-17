@@ -1,146 +1,236 @@
-﻿<!DOCTYPE html>
-<html lang="vi">
-<head>
-      <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BFKJTEGFNG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-BFKJTEGFNG');
-      </script>
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giao diện Danh sách Sản phẩm FAHASA</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>JavaScript Labs | Portfolio thực hành</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-    <!-- Header Giao diện -->
-    <header class="site-header">
-        <div class="container">
-            <h1 class="brand-title">FAHASA - Sách Mới Nổi Bật</h1>
-            <p class="brand-subtitle">Thiết kế cải tiến Thẻ sản phẩm (Product Card)</p>
+    <!-- PHẦN 1: THÔNG TIN CÁ NHÂN -->
+    <header class="hero">
+        <div class="shell">
+
+            <div class="eyebrow">
+                Phát triển ứng dụng TMĐT · Chương 4
+            </div>
+
+            <h1>JavaScript Labs</h1>
+
+            <p>
+                Portfolio thực hành JavaScript: từ cú pháp cơ bản,
+                thao tác DOM đến tương tác bằng thư viện jQuery.
+            </p>
+
+            <!-- Ảnh đại diện -->
+            <img
+                src="anhcanhan.jpg"
+                alt="Ảnh đại diện sinh viên"
+                width="100"
+                height="100"
+                style="object-fit: cover; border-radius: 50%;"
+            >
+
+            <!-- Thông tin sinh viên -->
+            <p>
+                <strong>Sinh viên:</strong> Nguyễn Vĩnh Trí
+                <br>
+                <strong>MSSV:</strong> 31241027613
+                <strong>Lớp học phần:</strong> EE001
+            </p>
+
+           
+<p>
+    <a href="https://github.com/nvt080906"
+       target="_blank" rel="noopener noreferrer">
+        GitHub cá nhân
+    </a>
+    |
+    <a href="https://github.com/nvt080906/ecommerce-ui-improvement"
+       target="_blank" rel="noopener noreferrer">
+        GitHub Repository bài thực hành
+    </a>
+</p>
+
+
         </div>
     </header>
 
-    <!-- Khu vực Danh sách Sản phẩm -->
-    <main class="main-content">
-       <section class="product-section" aria-labelledby="section-books-title">
-            <div class="container">
-               <h2 class="section-title" id="section-books-title">Sách Bán Chạy Trong Tuần</h2>
+    <!-- THANH ĐIỀU HƯỚNG -->
+    <nav class="nav">
+        <div class="shell">
+            <a href="#gioi-thieu">Giới thiệu</a>
+            <a href="#danh-sach">Các Lab</a>
+            <a href="#kien-thuc">Kiến thức</a>
+            <a href="#tong-ket">Tự đánh giá</a>
+        </div>
+    </nav>
 
-                <div class="product-grid">
+    <main class="main shell">
 
-                    <!-- Sản phẩm 1 -->
-                    <article class="product-card">
-                        <div class="card-media">
-                            <span class="badge-discount">-10%</span>
-                            <a href="#" class="image-link" tabindex="-1">
-                                <img src="images/de-men-phieu-luu-ky.jpg" alt="Dế Mèn Phiêu Lưu Ký" class="product-image" loading="lazy">
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="product-title">
-                                 Dế Mèn Phiêu Lưu Ký (Tái Bản 2024)
-                            </h3>
-                            <p class="product-author">Tô Hoài</p>
-                            <div class="card-footer">
-                                <div class="price-box">
-                                    <ins class="current-price">45.000 đ</ins>
-                                    <del class="old-price">50.000 đ</del>
-                                </div>
-                                <button type="button" class="btn-cart">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                                    <span>Thêm vào giỏ</span>
-                                </button>
-                            </div>
-                        </div>
-                    </article>
+        <!-- PHẦN 2: GIỚI THIỆU -->
+        <section class="panel" id="gioi-thieu">
 
-                    <!-- Sản phẩm 2: Tên dài xuống nhiều dòng -->
-                    <article class="product-card">
-                        <div class="card-media">
-                            <span class="badge-discount">-20%</span>
-                            <a href="#" class="image-link" tabindex="-1">
-                                <img src="images/cay-cam-ngot-cua-toi.jpg" alt="Cây Cam Ngọt Của Tôi" class="product-image" loading="lazy">
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="product-title">
-                                Cây Cam Ngọt Của Tôi - Tác Phẩm Kinh Điển Về Tình Yêu Thương Và Sự Trưởng Thành
-                            </h3>
-                            <p class="product-author">José Mauro de Vasconcelos</p>
-                            <div class="card-footer">
-                                <div class="price-box">
-                                    <ins class="current-price">86.400 đ</ins>
-                                    <del class="old-price">108.000 đ</del>
-                                </div>
-                                <button type="button" class="btn-cart">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                                    <span>Thêm vào giỏ</span>
-                                </button>
-                            </div>
-                        </div>
-                    </article>
+            <h2>Giới thiệu</h2>
 
-                    <!-- Sản phẩm 3 -->
-                    <article class="product-card">
-                        <div class="card-media">
-                            <span class="badge-discount">-20%</span>
-                            <a href="#" class="image-link" tabindex="-1">
-                                <img src="images/nha-gia-kim.jpg" alt="Nhà Giả Kim" class="product-image" loading="lazy">
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="product-title">
-                               Nhà Giả Kim (Bìa Mềm - Bộ Tác Phẩm Paulo Coelho)
-                            </h3>
-                            <p class="product-author">Paulo Coelho</p>
-                            <div class="card-footer">
-                                <div class="price-box">
-                                    <ins class="current-price">63.200 đ</ins>
-                                    <del class="old-price">79.000 đ</del>
-                                </div>
-                                <button type="button" class="btn-cart">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                                    <span>Thêm vào giỏ</span>
-                                </button>
-                            </div>
-                        </div>
-                    </article>
+            <p>
+                Ba bài Lab giúp thực hành cú pháp JavaScript,
+                làm việc với cấu trúc trang HTML thông qua DOM,
+                xử lý sự kiện người dùng và sử dụng jQuery
+                để tạo tương tác.
+            </p>
 
-                    <!-- Sản phẩm 4: Tên rất dài xuống nhiều dòng -->
-                    <article class="product-card">
-                        <div class="card-media">
-                            <span class="badge-discount">-25%</span>
-                            <a href="#" class="image-link" tabindex="-1">
-                                <img src="images/dac-nhan-tam.jpg" alt="Đắc Nhân Tâm" class="product-image" loading="lazy">
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="product-title">
-                               Đắc Nhân Tâm - Bí Quyết Để Thành Công Trong Giao Tiếp Và Thu Phục Lòng Người
-                            </h3>
-                            <p class="product-author">Dale Carnegie</p>
-                            <div class="card-footer">
-                                <div class="price-box">
-                                    <ins class="current-price">64.500 đ</ins>
-                                    <del class="old-price">86.000 đ</del>
-                                </div>
-                                <button type="button" class="btn-cart">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                                    <span>Thêm vào giỏ</span>
-                                </button>
-                            </div>
-                        </div>
-                    </article>
+            <p>
+                Những kiến thức này là nền tảng để xây dựng
+                biểu mẫu, cập nhật nội dung và phát triển
+                các chức năng tương tác trên website
+                thương mại điện tử.
+            </p>
 
-                </div>
-            </div>
         </section>
+
+        <!-- PHẦN 3: DANH SÁCH BÀI LAB -->
+        <section id="danh-sach">
+
+            <h2>Danh sách bài Lab</h2>
+
+            <div class="grid">
+
+                <!-- LAB 08 -->
+                <article class="card">
+
+                    <span class="pill">Lab 08</span>
+
+                    <h3>Language Foundations</h3>
+
+                    <p>
+                        Biến, kiểu dữ liệu, hàm, mảng và
+                        đối tượng trong JavaScript.
+                    </p>
+
+                    <a class="button" href="Lab08/">
+                        Xem Lab 08
+                    </a>
+
+                </article>
+
+                <!-- LAB 09 -->
+                <article class="card">
+
+                    <span class="pill">Lab 09</span>
+
+                    <h3>DOM and Events</h3>
+
+                    <p>
+                        Truy xuất phần tử, thay đổi giao diện,
+                        xử lý sự kiện và kiểm tra biểu mẫu.
+                    </p>
+
+                    <a class="button" href="Lab09/">
+                        Xem Lab 09
+                    </a>
+
+                </article>
+
+                <!-- LAB 10 -->
+                <article class="card">
+
+                    <span class="pill">Lab 10</span>
+
+                    <h3>jQuery</h3>
+
+                    <p>
+                        Thực hành Selectors, Events,
+                        Animation và GET Requests bằng jQuery.
+                    </p>
+
+                    <a class="button" href="Lab10/">
+                        Xem Lab 10
+                    </a>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- PHẦN 4: KIẾN THỨC VÀ KỸ NĂNG -->
+        <section class="panel" id="kien-thuc">
+
+            <h2>Kiến thức và kỹ năng đã học</h2>
+
+            <h3>Lab 08 – JavaScript 1: Language Foundations</h3>
+
+            <p>
+                Qua Lab 08, em đã thực hành cách khai báo biến,
+                sử dụng các kiểu dữ liệu, hàm, mảng và đối tượng
+                trong JavaScript. Em cũng biết cách sử dụng
+                String, Date và Math để xử lý dữ liệu, tạo các
+                phần tử HTML bằng hàm và tính toán thông tin đơn hàng.
+                Việc sử dụng Browser Console giúp em phát hiện
+                và sửa lỗi trong quá trình viết mã.
+            </p>
+
+            <h3>Lab 09 – JavaScript 2: DOM and Events</h3>
+
+            <p>
+                Lab 09 giúp em hiểu cách JavaScript truy cập
+                và thay đổi các phần tử HTML thông qua DOM.
+                em đã thực hành thêm, xóa và chỉnh sửa phần tử,
+                xử lý các sự kiện click, mouseover, mouseout và load.
+                em cũng biết cách sử dụng Developer Tools để
+                kiểm tra sự kiện, thiết lập Breakpoint và xây dựng
+                chức năng kiểm tra dữ liệu biểu mẫu.
+            </p>
+
+            <h3>Lab 10 – JavaScript 3: jQuery</h3>
+
+            <p>
+                Trong Lab 10, em đã thực hành sử dụng thư viện
+                jQuery để lựa chọn và thao tác các phần tử HTML.
+                em biết cách xử lý sự kiện, chèn nội dung động
+                và tạo các hiệu ứng như fade, slide và animation.
+                Phần GET Requests giúp em làm quen với việc
+                lấy dữ liệu JSON từ API, hiển thị dữ liệu trên
+                website và xử lý các trường hợp yêu cầu thành công
+                hoặc thất bại.
+            </p>
+
+        </section>
+
+        <!-- PHẦN 5: TỰ ĐÁNH GIÁ -->
+        <section class="panel" id="tong-ket">
+
+            <h2>Tự đánh giá sau khi hoàn thành</h2>
+
+            <p>
+                Qua ba bài Lab, em đã hiểu rõ hơn cách JavaScript
+                tạo ra các chức năng tương tác thay vì chỉ hiển thị
+                nội dung tĩnh. Lab 08 giúp em nắm cách sử dụng biến,
+                mảng, hàm và đối tượng để xử lý dữ liệu.
+                Ở Lab 09, em thấy thao tác DOM và xử lý sự kiện
+                hữu ích nhất vì có thể áp dụng trực tiếp cho biểu mẫu
+                đăng ký hoặc giỏ hàng. Lab 10 khó hơn, nhất là phần
+                GET Requests, do phải kiểm tra dữ liệu trả về và
+                xử lý lỗi khi kết nối API. Sau bài thực hành,
+                em cần cải thiện khả năng tự đọc tài liệu,
+                tìm nguyên nhân lỗi bằng Console và tổ chức mã nguồn
+                rõ ràng hơn để phát triển các chức năng website
+                ổn định.
+            </p>
+
+        </section>
+
     </main>
+
+    <!-- CHÂN TRANG -->
+    <footer class="footer shell">
+        JavaScript Labs · Bài thực hành cá nhân · UEH
+    </footer>
 
 </body>
 </html>
