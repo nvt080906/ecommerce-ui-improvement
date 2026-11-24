@@ -1,0 +1,41 @@
+figure {
+    margin: 2em;
+    padding: 1em;
+    background: #FFCC80;
+    width: 200px;
+}
+/* CASE 1 - Rotate */
+/*
+figure {
+    transform: rotate(45deg);
+}
+*/
+
+/* CASE 2 - Skew */
+/*
+figure {
+    transform: skew(-20deg);
+}
+*/
+
+/* CASE 3 - Translate */
+/*
+figure {
+    transform: skew(-20deg);
+}
+
+figure img {
+    transform: translateX(100px) translateY(-30px);
+}
+*/
+
+/* CASE 4 - Rotate and Scale */
+/*
+figure {
+    transform: rotate(15deg);
+}
+
+figure img {
+    transform: rotate(45deg) scale(0.5);
+}
+*/
