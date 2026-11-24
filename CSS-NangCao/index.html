@@ -1,0 +1,835 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced CSS | Lab 07 Portfolio</title>
+
+    <style>
+        :root {
+            --navy: #101e30;
+            --teal: #5eead4;
+            --green: #0f766e;
+            --background: #f1f5f9;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #dbe4ed;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1140px;
+            width: 90%;
+            margin: auto;
+        }
+
+        /* Thanh điều hướng */
+
+        header {
+            background: var(--navy);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #304155;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 18px 0;
+        }
+
+        .logo {
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--teal);
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+
+        .nav-links a:hover {
+            color: var(--teal);
+        }
+
+        /* Giới thiệu */
+
+        .hero {
+            background: linear-gradient(135deg, #101e30, #1b3546);
+            color: white;
+            padding: 75px 0 50px;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .eyebrow {
+            color: var(--teal);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: clamp(40px, 6vw, 68px);
+            line-height: 1.15;
+            margin-bottom: 14px;
+        }
+
+        .subtitle {
+            color: #a5c6d8;
+            font-size: 23px;
+            margin-bottom: 22px;
+        }
+
+        .hero-description {
+            color: #cbd5e1;
+            max-width: 640px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--teal);
+            color: var(--navy);
+            font-weight: 700;
+            padding: 12px 24px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            background: white;
+        }
+
+        /* Thông tin cá nhân */
+
+        .profile {
+            padding: 30px;
+            text-align: center;
+            border: 1px solid #3b5265;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .avatar {
+            width: 110px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--teal);
+            margin-bottom: 12px;
+        }
+
+        .profile h2 {
+            font-size: 23px;
+            margin-bottom: 4px;
+        }
+
+        .profile p {
+            color: #cbd5e1;
+            font-size: 14px;
+            margin: 6px 0;
+        }
+
+        .github-link {
+            display: inline-block;
+            margin-top: 16px;
+            color: var(--teal);
+            border: 1px solid var(--teal);
+            padding: 7px 18px;
+            border-radius: 6px;
+        }
+
+        .github-link:hover {
+            background: var(--teal);
+            color: var(--navy);
+        }
+
+        /* Thống kê */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 40px;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 22px;
+            border-radius: 12px;
+            border: 1px solid #344b60;
+        }
+
+        .stat strong {
+            display: block;
+            color: var(--teal);
+            font-size: 35px;
+        }
+
+        .stat span {
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        /* Nội dung chính */
+
+        section {
+            scroll-margin-top: 100px;
+        }
+
+        main {
+            padding: 55px 0;
+        }
+
+        .section-heading {
+            margin-bottom: 25px;
+        }
+
+        .section-heading h2 {
+            font-size: 30px;
+            color: var(--navy);
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .exercise-card {
+            background: white;
+            padding: 26px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
+            transition: 0.3s;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-4px);
+            border-color: #5eead4;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+        }
+
+        .card-number {
+            display: inline-block;
+            background: #ccfbf1;
+            color: var(--green);
+            font-weight: 700;
+            border-radius: 7px;
+            padding: 5px 12px;
+            margin-bottom: 14px;
+        }
+
+        .exercise-card h3 {
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .exercise-card > p {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .exercise-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 11px 0;
+            border-top: 1px solid #e2e8f0;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .exercise-link:hover {
+            color: var(--green);
+            padding-left: 8px;
+        }
+
+        .exercise-link span {
+            color: var(--green);
+            flex-shrink: 0;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Kiến thức và kỹ năng */
+
+        .skills-section {
+            margin-top: 55px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .skill {
+            background: white;
+            padding: 22px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            border-top: 4px solid var(--green);
+        }
+
+        .skill h3 {
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .skill p {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        /* Tổng kết */
+
+        .reflection {
+            margin-top: 55px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 32px;
+        }
+
+        .reflection h2 {
+            color: var(--navy);
+            font-size: 28px;
+            margin-bottom: 18px;
+        }
+
+        .reflection p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .tag {
+            background: #e0f2f1;
+            color: var(--green);
+            font-size: 13px;
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        footer {
+            background: var(--navy);
+            color: #cbd5e1;
+            padding: 28px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: var(--teal);
+        }
+
+        /* Responsive */
+
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .hero {
+                padding: 45px 0 35px;
+            }
+
+            .exercise-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .stats {
+                gap: 10px;
+            }
+
+            .stat {
+                padding: 14px;
+            }
+
+            .stat strong {
+                font-size: 26px;
+            }
+
+            .nav-links {
+                gap: 15px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .exercise-card,
+            .reflection {
+                padding: 20px;
+            }
+
+            .stat span {
+                font-size: 11px;
+            }
+
+            .subtitle {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="container">
+            <a href="#gioi-thieu" class="logo">CSS / LAB 07</a>
+
+            <div class="nav-links">
+                <a href="#gioi-thieu">Giới thiệu</a>
+                <a href="#bai-tap">Bài thực hành</a>
+                <a href="#ky-nang">Kỹ năng</a>
+                <a href="#tong-ket">Tổng kết</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero" id="gioi-thieu">
+        <div class="container">
+
+            <div class="hero-content">
+                <div>
+                    <div class="eyebrow">
+                        ADVANCED FRONTEND DEVELOPMENT
+                    </div>
+
+                    <h1>Advanced CSS</h1>
+
+                    <div class="subtitle">
+                        Layout & Responsive Design
+                    </div>
+
+                    <p class="hero-description">
+                        Lab 07 tập trung vào các kỹ thuật CSS nâng cao
+                        trong xây dựng bố cục, định vị phần tử,
+                        thiết kế giao diện responsive và tạo hiệu ứng
+                        tương tác. Đây là những kiến thức có thể vận dụng
+                        trực tiếp vào quá trình phát triển giao diện
+                        website thương mại điện tử.
+                    </p>
+
+                    <a href="#bai-tap" class="btn">
+                        Khám phá bài thực hành →
+                    </a>
+                </div>
+
+                <div class="profile">
+
+                    <img class="avatar"
+                         src="https://github.com/nvt080906.png"
+                         alt="Ảnh đại diện GitHub">
+
+                    <!-- Thay thông tin sinh viên tại đây -->
+
+                    <h2>Nguyễn Vĩnh Trí</h2>
+
+                    <p>MSSV: 31241027613</p>
+                    <p>Lớp học phần: 26C1INF509027101</p>
+                    <p>Chuyên ngành Thương mại điện tử</p>
+                    <p>Đại học Kinh tế TP. Hồ Chí Minh</p>
+
+                    <a class="github-link"
+                       href="https://github.com/nvt080906"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        GitHub Profile ↗
+                    </a>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <strong>19</strong>
+                    <span>Exercise hoàn thành</span>
+                </div>
+
+                <div class="stat">
+                    <strong>05</strong>
+                    <span>Nhóm kiến thức</span>
+                </div>
+
+                <div class="stat">
+                    <strong>100%</strong>
+                    <span>Tiến độ Lab 07</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <main class="container">
+
+        <section id="bai-tap">
+
+            <div class="section-heading">
+                <div class="eyebrow" style="color: #0f766e;">
+                    PRACTICAL EXERCISES
+                </div>
+
+                <h2>Danh sách bài thực hành</h2>
+
+                <p>
+                    Tổng hợp 19 Exercise thuộc Lab 07 –
+                    Advanced CSS: Layout.
+                </p>
+            </div>
+
+            <div class="exercise-grid">
+
+                <article class="exercise-card">
+                    <div class="card-number">01</div>
+
+                    <h3>Document Flow & Positioning</h3>
+
+                    <p>
+                        Kiểm soát cách hiển thị, định vị và
+                        thứ tự chồng lớp của các phần tử.
+                    </p>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise01.html">
+                        7.1 – Document Flow <span>↗</span>
+                    </a>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise02.html">
+                        7.2 – Relative Positioning <span>↗</span>
+                    </a>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise03.html">
+                        7.3 – Absolute Positioning <span>↗</span>
+                    </a>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise04.html">
+                        7.4 – Stacking Using Z-Index <span>↗</span>
+                    </a>
+                </article>
+
+                <article class="exercise-card">
+                    <div class="card-number">02</div>
+
+                    <h3>Float & Clear</h3>
+
+                    <p>
+                        Tổ chức bố cục bằng float, clear
+                        và kết hợp các kỹ thuật định vị.
+                    </p>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise05.html">
+                        7.5 – Floating Elements <span>↗</span>
+                    </a>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise06.html">
+                        7.6 – Floating in a Container <span>↗</span>
+                    </a>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise07.html">
+                        7.7 – Floating Multiple Items <span>↗</span>
+                    </a>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise08.html">
+                        7.8 – Floating and Clearing <span>↗</span>
+                    </a>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise09.html">
+                        7.9 – Using Positioning <span>↗</span>
+                    </a>
+                </article>
+
+                <article class="exercise-card">
+                    <div class="card-number">03</div>
+
+                    <h3>Layout & Responsive Design</h3>
+
+                    <p>
+                        Xây dựng bố cục nhiều cột và điều chỉnh
+                        giao diện theo kích thước màn hình.
+                    </p>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise10.html">
+                        7.10 – Two-Column Layout <span>↗</span>
+                    </a>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise11.html">
+                        7.11 – Three-Column Layout <span>↗</span>
+                    </a>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise12.html">
+                        7.12 – Media Queries <span>↗</span>
+                    </a>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise13.html">
+                        7.13 – Setting the Viewport <span>↗</span>
+                    </a>
+                </article>
+
+                <article class="exercise-card">
+                    <div class="card-number">04</div>
+
+                    <h3>CSS Effects & Animations</h3>
+
+                    <p>
+                        Tạo hiệu ứng biến đổi, chuyển tiếp,
+                        bộ lọc hình ảnh và chuyển động.
+                    </p>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise14.html">
+                        7.14 – Transforms <span>↗</span>
+                    </a>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise15.html">
+                        7.15 – Transitions <span>↗</span>
+                    </a>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise16.html">
+                        7.16 – More Transitions <span>↗</span>
+                    </a>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise17.html">
+                        7.17 – Filters <span>↗</span>
+                    </a>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise18.html">
+                        7.18 – Animations <span>↗</span>
+                    </a>
+                </article>
+
+                <article class="exercise-card full-width">
+                    <div class="card-number">05</div>
+
+                    <h3>Bootstrap Grid System</h3>
+
+                    <p>
+                        Ứng dụng hệ thống lưới và các thành phần
+                        giao diện có sẵn của Bootstrap để xây dựng
+                        bố cục website.
+                    </p>
+
+                    <a class="exercise-link"
+                       href="Lab-07/lab07-exercise19.html">
+                        7.19 – Using Bootstrap <span>↗</span>
+                    </a>
+                </article>
+
+            </div>
+        </section>
+
+        <section class="skills-section" id="ky-nang">
+
+            <div class="section-heading">
+                <div class="eyebrow" style="color: #0f766e;">
+                    LEARNING OUTCOMES
+                </div>
+
+                <h2>Kiến thức và kỹ năng đã học</h2>
+
+                <p>
+                    Những kỹ thuật CSS được vận dụng
+                    trong quá trình thực hiện Lab 07.
+                </p>
+            </div>
+
+            <div class="skills-grid">
+
+                <div class="skill">
+                    <h3>01. Document Flow</h3>
+                    <p>
+                        Hiểu cách các phần tử inline và block
+                        được hiển thị, thay đổi bố cục bằng display.
+                    </p>
+                </div>
+
+                <div class="skill">
+                    <h3>02. CSS Positioning</h3>
+                    <p>
+                        Sử dụng relative, absolute và z-index
+                        để kiểm soát vị trí và thứ tự chồng lớp.
+                    </p>
+                </div>
+
+                <div class="skill">
+                    <h3>03. Float & Layout</h3>
+                    <p>
+                        Sử dụng float và clear để xây dựng
+                        bố cục hai cột và ba cột.
+                    </p>
+                </div>
+
+                <div class="skill">
+                    <h3>04. Responsive Design</h3>
+                    <p>
+                        Áp dụng media queries và viewport
+                        để giao diện thích ứng với nhiều thiết bị.
+                    </p>
+                </div>
+
+                <div class="skill">
+                    <h3>05. CSS Effects</h3>
+                    <p>
+                        Kết hợp transforms, transitions,
+                        filters và animations để tạo hiệu ứng.
+                    </p>
+                </div>
+
+                <div class="skill">
+                    <h3>06. Bootstrap</h3>
+                    <p>
+                        Sử dụng grid system, navbar, panel
+                        và các thành phần giao diện có sẵn.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="reflection" id="tong-ket">
+
+            <div class="eyebrow" style="color: #0f766e;">
+                PERSONAL REFLECTION
+            </div>
+
+            <h2>Tự đánh giá sau khi hoàn thành</h2>
+
+            <p>
+                Sau khi hoàn thành Lab 07, tôi hiểu rõ hơn cách
+                CSS kiểm soát vị trí, bố cục và hiệu ứng của
+                các phần tử trên website. Exercise 7.12 và 7.13
+                là những bài thực hành hữu ích nhất vì giúp tôi
+                hiểu cách điều chỉnh giao diện theo kích thước
+                màn hình. Exercise 7.18 cũng đặt ra một số khó khăn
+                trong việc xác định trạng thái và thời gian
+                chuyển động của phần tử.
+            </p>
+
+            <p>
+                Những kiến thức về media queries, viewport và
+                Bootstrap có thể được áp dụng khi xây dựng
+                giao diện website thương mại điện tử trên nhiều
+                thiết bị. Các kỹ thuật transform, transition
+                và animation còn hỗ trợ cải thiện trải nghiệm
+                tương tác tại trang danh mục và chi tiết sản phẩm.
+            </p>
+
+            <div class="tags">
+                <span class="tag">HTML5</span>
+                <span class="tag">CSS3</span>
+                <span class="tag">Positioning</span>
+                <span class="tag">Responsive Design</span>
+                <span class="tag">Media Queries</span>
+                <span class="tag">Animation</span>
+                <span class="tag">Bootstrap</span>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>
+                Lab 07 – Advanced CSS: Layout
+            </p>
+
+            <p>
+                Phát triển ứng dụng TMĐT |
+                Đại học Kinh tế TP. Hồ Chí Minh | 2026
+            </p>
+
+            <p>
+                <a href="https://github.com/nvt080906/ecommerce-ui-improvement"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    View GitHub Repository ↗
+                </a>
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
