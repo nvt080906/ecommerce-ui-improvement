@@ -1,0 +1,18 @@
+{
+  "name": "daynote",
+  "version": "1.0.0",
+  "description": "Bản giao diện và prototype chạy phía trình duyệt, chưa kết nối Node.js hoặc cơ sở dữ liệu.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "seed": "node seed.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}
