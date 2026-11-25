@@ -1,10 +1,16 @@
 
 // ========================================
-// KẾT NỐI API VÀ KHỞI TẠO
+// KHỞI TẠO ỨNG DỤNG
 // ========================================
 
 const API = '/api/tasks';
 const $ = id => document.getElementById(id);
+
+// Nhận diện môi trường GitHub Pages
+const isGitHubPages =
+    window.location.hostname.endsWith('.github.io');
+
+const STORAGE_KEY = 'daynote-v2-tasks';
 
 function dateKey(d = new Date()) {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -32,7 +38,6 @@ const tone = {
     'Thấp': 'low'
 };
 
-// Danh sách đường dẫn của từng trang
 const routes = {
     today: { view: 'today', category: null },
     all: { view: 'all', category: null },
@@ -49,7 +54,118 @@ const categoryRoutes = {
 };
 
 // ========================================
-// XỬ LÝ API
+// DỮ LIỆU MẪU DÀNH CHO GITHUB PAGES
+// ========================================
+
+function sampleTasks() {
+    return [
+        {
+            id: 1,
+            title: 'Hoàn thành bài thực hành Node.js',
+            description: 'Kiểm tra chương trình HelloWorld và ghi chú kiến thức.',
+            date: today,
+            time: '10:30',
+            category: 'Học tập',
+            priority: 'Cao',
+            done: false
+        },
+        {
+            id: 2,
+            title: 'Chuẩn bị tài liệu cho bài thuyết trình',
+            description: 'Xem lại slide và các nội dung cần trình bày.',
+            date: today,
+            time: '14:00',
+            category: 'Học tập',
+            priority: 'Cao',
+            done: false
+        },
+        {
+            id: 3,
+            title: 'Đọc 20 trang sách',
+            description: 'Dành một chút thời gian cho bản thân.',
+            date: today,
+            time: '18:00',
+            category: 'Cá nhân',
+            priority: 'Trung bình',
+            done: false
+        },
+        {
+            id: 4,
+            title: 'Cập nhật kế hoạch tuần',
+            description: 'Sắp xếp các công việc còn lại.',
+            date: today,
+            time: '19:30',
+            category: 'Công việc',
+            priority: 'Trung bình',
+            done: false
+        },
+        {
+            id: 5,
+            title: 'Dọn dẹp bàn học',
+            description: '',
+            date: today,
+            time: '21:00',
+            category: 'Cá nhân',
+            priority: 'Thấp',
+            done: false
+        },
+        {
+            id: 6,
+            title: 'Kiểm tra email',
+            description: '',
+            date: today,
+            time: '08:00',
+            category: 'Công việc',
+            priority: 'Thấp',
+            done: true
+        },
+        {
+            id: 7,
+            title: 'Xem lại bài học hôm qua',
+            description: '',
+            date: today,
+            time: '09:00',
+            category: 'Học tập',
+            priority: 'Trung bình',
+            done: true
+        }
+    ];
+}
+
+// ========================================
+// LOCALSTORAGE - GITHUB PAGES
+// ========================================
+
+function readLocalTasks() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    // Chỉ tạo dữ liệu mẫu ở lần truy cập đầu tiên
+    if (saved === null) {
+        const initialTasks = sampleTasks();
+
+        saveLocalTasks(initialTasks);
+
+        return initialTasks;
+    }
+
+    const result = JSON.parse(saved);
+
+    if (!Array.isArray(result)) {
+        throw new Error('Dữ liệu không hợp lệ');
+    }
+
+    return result;
+}
+
+function saveLocalTasks(data) {
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(data)
+    );
+}
+
+// ========================================
+// REST API - NODE.JS VÀ SQLITE
 // ========================================
 
 async function request(url, method = 'GET', data) {
@@ -69,35 +185,108 @@ async function request(url, method = 'GET', data) {
     const response = await fetch(url, options);
 
     if (!response.ok) {
-        throw new Error('Yêu cầu thất bại: ' + response.status);
+        throw new Error(
+            'Yêu cầu thất bại: ' + response.status
+        );
     }
 
     return await response.json();
 }
 
-// Lấy dữ liệu từ SQLite thông qua API
+// ========================================
+// QUẢN LÝ DỮ LIỆU THEO MÔI TRƯỜNG
+// ========================================
+
 async function loadTasks() {
-    tasks = await request(API);
+
+    if (isGitHubPages) {
+        tasks = readLocalTasks();
+    } else {
+        tasks = await request(API);
+    }
+
     ready = true;
     render();
 }
 
 // Thêm công việc
 async function createTask(data) {
-    await request(API, 'POST', {
-        ...data,
-        done: false
-    });
+
+    if (isGitHubPages) {
+
+        const list = readLocalTasks();
+
+        const nextId =
+            Math.max(0, ...list.map(t => t.id)) + 1;
+
+        list.push({
+            ...data,
+            id: nextId,
+            done: false
+        });
+
+        saveLocalTasks(list);
+
+    } else {
+
+        await request(API, 'POST', {
+            ...data,
+            done: false
+        });
+    }
 }
 
 // Cập nhật công việc
 async function updateTask(id, data) {
-    await request(`${API}/${id}`, 'PUT', data);
+
+    if (isGitHubPages) {
+
+        const list = readLocalTasks();
+
+        const index = list.findIndex(
+            t => t.id === id
+        );
+
+        if (index === -1) {
+            throw new Error('Không tìm thấy công việc');
+        }
+
+        list[index] = {
+            ...list[index],
+            ...data,
+            id
+        };
+
+        saveLocalTasks(list);
+
+    } else {
+
+        await request(
+            `${API}/${id}`,
+            'PUT',
+            data
+        );
+    }
 }
 
 // Xóa công việc
 async function deleteTask(id) {
-    await request(`${API}/${id}`, 'DELETE');
+
+    if (isGitHubPages) {
+
+        const list = readLocalTasks().filter(
+            t => t.id !== id
+        );
+
+        saveLocalTasks(list);
+
+    } else {
+
+        await request(
+            `${API}/${id}`,
+            'DELETE'
+        );
+    }
 }
 
 // ========================================
@@ -105,7 +294,8 @@ async function deleteTask(id) {
 // ========================================
 
 const formatDate = date =>
-    new Date(date + 'T00:00:00').toLocaleDateString('vi-VN');
+    new Date(date + 'T00:00:00')
+        .toLocaleDateString('vi-VN');
 
 $('topDate').textContent =
     new Date().toLocaleDateString('vi-VN', {
@@ -115,7 +305,16 @@ $('topDate').textContent =
         year: 'numeric'
     });
 
+// Phân biệt bản demo online và bản Full
+if (isGitHubPages) {
+    $('topDate').textContent += ' · Demo online';
+
+    $('topDate').title =
+        'Bản GitHub Pages sử dụng LocalStorage';
+}
+
 function make(tag, cls, text) {
+
     const el = document.createElement(tag);
 
     if (cls) {
@@ -130,19 +329,29 @@ function make(tag, cls, text) {
 }
 
 function notify(text) {
+
     $('toast').textContent = text;
+
     $('toast').classList.add('show');
 
     clearTimeout(toastTimer);
 
     toastTimer = setTimeout(() => {
+
         $('toast').classList.remove('show');
+
     }, 2500);
 }
 
 function showError(error) {
+
     console.error(error);
-    notify('Có lỗi xảy ra. Vui lòng kiểm tra server.');
+
+    notify(
+        isGitHubPages
+            ? 'Không thể xử lý dữ liệu trên trình duyệt.'
+            : 'Có lỗi xảy ra. Vui lòng kiểm tra server.'
+    );
 }
 
 // ========================================
@@ -171,7 +380,6 @@ function taskRow(t) {
             : 'Đánh dấu hoàn thành'
     );
 
-    // Cập nhật trạng thái hoàn thành
     check.onclick = async () => {
 
         if (busy) return;
@@ -194,14 +402,15 @@ function taskRow(t) {
             );
 
         } catch (error) {
+
             showError(error);
 
         } finally {
+
             busy = false;
         }
     };
 
-    // Thông tin công việc
     const info = make('div', 'task-info');
 
     info.append(
@@ -209,6 +418,7 @@ function taskRow(t) {
     );
 
     if (t.description) {
+
         info.append(
             make('div', 'description', t.description)
         );
@@ -224,7 +434,6 @@ function taskRow(t) {
         )
     );
 
-    // Hiển thị icon danh mục
     const cat = make('span');
 
     const icon = document.querySelector(
@@ -242,13 +451,17 @@ function taskRow(t) {
     );
 
     meta.append(cat);
+
     info.append(meta);
 
-    // Các nút thao tác
     const actions = make('div', 'task-actions');
 
     // Nút chỉnh sửa
-    const edit = make('button', 'icon-btn', '✎');
+    const edit = make(
+        'button',
+        'icon-btn',
+        '✎'
+    );
 
     edit.type = 'button';
     edit.title = 'Sửa';
@@ -261,7 +474,11 @@ function taskRow(t) {
     edit.onclick = () => openForm(t);
 
     // Nút xóa
-    const del = make('button', 'icon-btn', '×');
+    const del = make(
+        'button',
+        'icon-btn',
+        '×'
+    );
 
     del.type = 'button';
     del.title = 'Xóa';
@@ -284,14 +501,17 @@ function taskRow(t) {
         try {
 
             await deleteTask(t.id);
+
             await loadTasks();
 
             notify('Đã xóa công việc');
 
         } catch (error) {
+
             showError(error);
 
         } finally {
+
             busy = false;
         }
     };
@@ -326,17 +546,20 @@ function render() {
         dayTasks.filter(t => !t.done).length;
 
     const base = tasks.filter(t =>
+
         (view !== 'today' || t.date === today) &&
+
         (!category || t.category === category)
     );
 
-    const done = base.filter(t => t.done).length;
+    const done = base.filter(
+        t => t.done
+    ).length;
 
     const pct = base.length
         ? Math.round(done / base.length * 100)
         : 0;
 
-    // Thanh tiến độ
     $('progressTitle').textContent =
         `${done} / ${base.length} công việc`;
 
@@ -345,16 +568,18 @@ function render() {
             ? 'Đã hoàn thành hôm nay'
             : 'Đã hoàn thành';
 
-    $('progressPercent').textContent = pct + '%';
+    $('progressPercent').textContent =
+        pct + '%';
 
-    $('progressBar').style.width = pct + '%';
+    $('progressBar').style.width =
+        pct + '%';
 
-    // Tìm kiếm công việc
+    // Tìm kiếm
     const q = $('search').value
         .trim()
         .toLocaleLowerCase('vi');
 
-    // Lọc và sắp xếp công việc
+    // Lọc và sắp xếp
     const list = base.filter(t =>
 
         (
@@ -378,10 +603,8 @@ function render() {
 
         rank[a.priority] - rank[b.priority] ||
         a.time.localeCompare(b.time)
-
     );
 
-    // Hiển thị công việc theo trạng thái
     for (const [isDone, id, count] of [
 
         [false, 'pendingList', 'pendingCount'],
@@ -413,13 +636,14 @@ function render() {
     }
 
     // ========================================
-    // THỐNG KÊ TỪ DATABASE
+    // THỐNG KÊ
     // ========================================
 
     const total = tasks.length;
 
-    const completed =
-        tasks.filter(t => t.done).length;
+    const completed = tasks.filter(
+        t => t.done
+    ).length;
 
     const rate = total
         ? Math.round(completed / total * 100)
@@ -432,9 +656,11 @@ function render() {
     $('statPending').textContent =
         total - completed;
 
-    $('statRate').textContent = rate + '%';
+    $('statRate').textContent =
+        rate + '%';
 
-    $('donutRate').textContent = rate + '%';
+    $('donutRate').textContent =
+        rate + '%';
 
     $('donut').style.background =
         `conic-gradient(var(--wine) ${rate}%, #eaded3 0)`;
@@ -447,6 +673,7 @@ function render() {
 function navigate(v, c = null) {
 
     view = v;
+
     category = c;
 
     $('taskView').hidden = v === 'stats';
@@ -461,7 +688,6 @@ function navigate(v, c = null) {
 
     $('crumb').textContent = title;
 
-    // Không có dấu chấm cuối tiêu đề
     $('pageTitle').textContent = title;
 
     $('subtitle').textContent =
@@ -469,17 +695,16 @@ function navigate(v, c = null) {
             ? 'Một ngày mới, một chút tiến bộ.'
             : 'Sắp xếp công việc theo cách của bạn.';
 
-    // Cập nhật menu đang được chọn
-    document.querySelectorAll('.nav').forEach(b => {
+    document.querySelectorAll('.nav')
+        .forEach(b => {
 
-        b.classList.toggle(
-            'active',
-
-            c
-                ? b.dataset.category === c
-                : b.dataset.view === v
-        );
-    });
+            b.classList.toggle(
+                'active',
+                c
+                    ? b.dataset.category === c
+                    : b.dataset.view === v
+            );
+        });
 
     $('search').value = '';
 
@@ -491,13 +716,13 @@ function navigate(v, c = null) {
 }
 
 // ========================================
-// LƯU TRANG HIỆN TẠI BẰNG URL HASH
+// URL HASH - GIỮ TRANG KHI F5
 // ========================================
 
-// Chuyển sang đường dẫn tương ứng
 function goToRoute(route) {
 
     if (!Object.hasOwn(routes, route)) {
+
         route = 'today';
     }
 
@@ -513,12 +738,11 @@ function goToRoute(route) {
     }
 }
 
-// Khôi phục trang dựa trên URL
 function restorePage() {
 
-    let route = window.location.hash.substring(1);
+    let route =
+        window.location.hash.substring(1);
 
-    // Nếu chưa có đường dẫn hoặc đường dẫn sai
     if (!Object.hasOwn(routes, route)) {
 
         route = 'today';
@@ -538,7 +762,6 @@ function restorePage() {
     );
 }
 
-// Xử lý khi đổi URL hoặc dùng Back / Forward
 window.addEventListener(
     'hashchange',
     restorePage
@@ -602,33 +825,32 @@ function openForm(t = null) {
 // XỬ LÝ SỰ KIỆN
 // ========================================
 
-// Nút thêm công việc
-document.querySelectorAll('[data-add]').forEach(b => {
+document.querySelectorAll('[data-add]')
+    .forEach(b => {
 
-    b.onclick = () => openForm();
-});
+        b.onclick = () => openForm();
+    });
 
-// Chuyển trang chính
-document.querySelectorAll('[data-view]').forEach(b => {
+document.querySelectorAll('[data-view]')
+    .forEach(b => {
 
-    b.onclick = () => {
+        b.onclick = () => {
 
-        goToRoute(b.dataset.view);
-    };
-});
+            goToRoute(b.dataset.view);
+        };
+    });
 
-// Chuyển trang danh mục
-document.querySelectorAll('[data-category]').forEach(b => {
+document.querySelectorAll('[data-category]')
+    .forEach(b => {
 
-    b.onclick = () => {
+        b.onclick = () => {
 
-        goToRoute(
-            categoryRoutes[b.dataset.category]
-        );
-    };
-});
+            goToRoute(
+                categoryRoutes[b.dataset.category]
+            );
+        };
+    });
 
-// Nhấn logo để trở về Hôm nay
 document.querySelector('.brand').onclick = e => {
 
     e.preventDefault();
@@ -636,25 +858,25 @@ document.querySelector('.brand').onclick = e => {
     goToRoute('today');
 };
 
-// Đóng form
 $('closeDialog').onclick =
 $('cancelDialog').onclick = () => {
 
     if (!busy) {
+
         $('taskDialog').close();
     }
 };
 
-// Không đóng form khi đang lưu dữ liệu
 $('taskDialog').addEventListener('cancel', e => {
 
     if (busy) {
+
         e.preventDefault();
     }
 });
 
 // ========================================
-// LƯU CÔNG VIỆC VÀO DATABASE
+// LƯU CÔNG VIỆC
 // ========================================
 
 $('taskForm').onsubmit = async e => {
@@ -674,6 +896,16 @@ $('taskForm').onsubmit = async e => {
     if (!data.title) {
 
         form.elements.title.focus();
+
+        return;
+    }
+
+    if (
+        data.time !== '' &&
+        !/^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(data.time)
+    ) {
+
+        notify('Thời gian không hợp lệ.');
 
         return;
     }
@@ -766,8 +998,12 @@ $('taskForm').onsubmit = async e => {
 // KHỞI ĐỘNG ỨNG DỤNG
 // ========================================
 
-// Khôi phục đúng trang trước khi tải dữ liệu
 restorePage();
 
-// Đọc dữ liệu từ Database
 loadTasks().catch(showError);
+
+console.log(
+    isGitHubPages
+        ? 'Daynote: GitHub Pages - LocalStorage'
+        : 'Daynote: Node.js - SQLite'
+);
