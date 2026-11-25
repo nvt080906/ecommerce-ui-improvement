@@ -1,0 +1,6 @@
+node_modules/
+daynote.db
+daynote.db-journal
+daynote.db-wal
+daynote.db-shm
+.env
